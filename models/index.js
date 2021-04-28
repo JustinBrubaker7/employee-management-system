@@ -2,23 +2,21 @@ const Employee = require('./employee');
 const Department = require('./department');
 const Role = require('./role');
 
-// Employee.hasOne(Role, {
-//   foreignKey: 'employee_id',
-//   onDelete: 'CASCADE',
-// });
+Role.hasOne(Employee, {
+  foreignKey: 'role_id',
+});
 
-// Role.belongsTo(Employee, {
-//   foreignKey: 'employee_id',
-// });
+Employee.belongsTo(Role, {
+  foreignKey: 'role_id',
+});
 
-// Role.hasOne(Department, {
-//   foreignKey: 'department_id',
-//   onDelete: 'CASCADE',
-// });
+Department.hasMany(Role, {
+  foreignKey: 'department_id',
+});
 
-// Department.belongsTo(Employee, {
-//   foreignKey: 'department_id',
-// });
+Role.belongsTo(Department, {
+  foreignKey: 'department_id',
+});
 
 
 module.exports = { Employee, Department, Role };

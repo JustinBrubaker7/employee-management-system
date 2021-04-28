@@ -1,7 +1,14 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Role extends Model {}
+class Role extends Model {
+  constructor(title, salary, department){
+    this.title = title;
+    this.salary = salary;
+    this.department = department;
+  
+}
+}
 
 Role.init(
   {
