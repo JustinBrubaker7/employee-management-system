@@ -1,24 +1,24 @@
-const Reader = require('./Reader');
-const Book = require('./Book');
-const LibraryCard = require('./LibraryCard');
+const Employee = require('./employee');
+const Department = require('./department');
+const Role = require('./role');
 
-Reader.hasOne(LibraryCard, {
-  foreignKey: 'reader_id',
-  onDelete: 'CASCADE',
-});
+// Employee.hasOne(Role, {
+//   foreignKey: 'employee_id',
+//   onDelete: 'CASCADE',
+// });
 
-LibraryCard.belongsTo(Reader, {
-  foreignKey: 'reader_id',
-});
+// Role.belongsTo(Employee, {
+//   foreignKey: 'employee_id',
+// });
 
-Reader.hasMany(Book, {
-  foreignKey: 'reader_id',
-  onDelete: 'CASCADE',
-});
+// Role.hasOne(Department, {
+//   foreignKey: 'department_id',
+//   onDelete: 'CASCADE',
+// });
 
-Book.belongsTo(Reader, {
-  foreignKey: 'reader_id',
-});
+// Department.belongsTo(Employee, {
+//   foreignKey: 'department_id',
+// });
 
 
-module.exports = { Reader, Book, LibraryCard };
+module.exports = { Employee, Department, Role };
