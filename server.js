@@ -78,8 +78,13 @@ function createNewDepartment(){
 
 async function createNewRole(){
   try{
-    const allDepartments = await Department.findAll()
-    console.log(allDepartments)
+    const allDepartments = await Department.findAll({
+      raw : true
+    })
+    // console.log(allDepartments)
+    // console.log(allDepartments[1].name)
+    // console.log(allDepartments[2].id)
+    
     inquirer.prompt([
       {
         type: "Input",
@@ -98,11 +103,10 @@ async function createNewRole(){
         choices: allDepartments,
       }
     ]).then(async (answers)  => {
-
-        const newRole = await Role.create({
+         const newRole = await Role.create({
         title: answers.roleTitle,
         salary: answers.salary,
-        department_id: answers.departmnet
+        department_id: allDepartments[1].id
       });
       console.log(`${answers.roleTitle} has now been added as a role.\n`)
       promtQuestion();
