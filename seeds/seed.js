@@ -1,28 +1,28 @@
 const sequelize = require('../config/connection');
-const { Reader, Book, LibraryCard } = require('../models');
+const { Employee, Role, Department } = require('../models');
 
-const readerSeedData = require('./readerSeedData.json');
-const bookSeedData = require('./bookSeedData.json');
+const employeeSeedData = require('./readerSeedData.json');
+const roleSeedData = require('./bookSeedData.json');
 
 const seedDatabase = async () => {
   await sequelize.sync({ force: true });
 
-  const readers = await Reader.bulkCreate(readerSeedData, {
+  const readers = await Employee.bulkCreate(employeeSeedData, {
     individualHooks: true,
     returning: true,
   });
 
-  for (const { id } of readers) {
-    const newCard = await LibraryCard.create({
-      reader_id: id,
+  for (const { id } of employees) {
+    const newCard = await role.create({
+      role_id: id,
     });
   }
 
-  for (const book of bookSeedData) {
-    const newBook = await Book.create({
+  for (const role of roleSeedData) {
+    const newBook = await Role.create({
       ...book,
       // Attach a random reader ID to each book
-      reader_id: readers[Math.floor(Math.random() * readers.length)].id,
+      role_id: readers[Math.floor(Math.random() * readers.length)].id,
     });
   }
 
