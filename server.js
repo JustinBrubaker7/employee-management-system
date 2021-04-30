@@ -47,16 +47,48 @@ function promtQuestion(){
 }
 
 
-function createNewEmployee(){
- console.log('employee made')
- promtQuestion();
+async function createNewEmployee(){
+
+  const allRoles = await Role.findAll({
+    raw : true
+  })
+    inquirer.prompt([
+      {
+        type: "Input",
+        name: "firstName",
+        message: "What is the employee's last name?"
+      },
+      {
+        type: "Input",
+        name: "LastName",
+        message: "What is the employee's last name?"
+      },
+      {
+        type: "list",
+        name: "role",
+        message: "whatis the employee's role?",
+        choices: allRoles,
+      }
+    ]).then(async (answers)  => {
+
+      
+        const newEmployee = await Employee.create({
+        first_name: answers.firstName,
+        last_name: answers.lastName,
+        role_id: role,
+      });
+      console.log(`${answers.roleTitle} has now been added as a role.\n`)
+      promtQuestion();
+    })
+    
+  } 
+
 
 
 
 
  //ask qusetions to get information
  //sequalize command .create to make a new insertion
-}
 
 
 function createNewDepartment(){
@@ -103,6 +135,9 @@ async function createNewRole(){
         choices: allDepartments,
       }
     ]).then(async (answers)  => {
+
+      //need to find the array index of allDepartments where answers.department matches it.
+      
          const newRole = await Role.create({
         title: answers.roleTitle,
         salary: answers.salary,
