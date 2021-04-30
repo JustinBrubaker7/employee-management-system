@@ -50,20 +50,70 @@ function promtQuestion(){
 function createNewEmployee(){
  console.log('employee made')
  promtQuestion();
+
+
+
+
+ //ask qusetions to get information
+ //sequalize command .create to make a new insertion
 }
 
 
 function createNewDepartment(){
-  console.log('Department made')
-  promtQuestion();
+  inquirer.prompt([
+    {
+      type: "Input",
+      name: "departmentName",
+      message: "What is the department's name?"
+    }
+  ]).then(async (answer)  => {
+    const newDepartment = await Department.create({
+      name: answer.departmentName,
+    });
+    console.log(`${answer.departmentName} has now been added as a department.\n`)
+    promtQuestion();
+  })
+
 };
 
-function createNewRole(){
-  console.log('Role made')
-  promtQuestion();
+async function createNewRole(){
+  try{
+    const allDepartments = await Department.findAll()
+    console.log(allDepartments)
+    inquirer.prompt([
+      {
+        type: "Input",
+        name: "roleTitle",
+        message: "What is the title of this role?"
+      },
+      {
+        type: "Input",
+        name: "salary",
+        message: "What is salary of this role?"
+      },
+      {
+        type: "list",
+        name: "department",
+        message: "what department is this role in?",
+        choices: allDepartments,
+      }
+    ]).then(async (answers)  => {
+
+        const newRole = await Role.create({
+        title: answers.roleTitle,
+        salary: answers.salary,
+        department_id: answers.departmnet
+      });
+      console.log(`${answers.roleTitle} has now been added as a role.\n`)
+      promtQuestion();
+    })
+  } catch (err) {
+    console.log(err)
+  }
+
 };
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
 });
 
