@@ -24,7 +24,7 @@ Employee.init(
     },
     last_name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      
     },
     role_id: {
       type: DataTypes.INTEGER,
