@@ -45,7 +45,39 @@ async function viewEmployees(){
   promtQuestion();
 }
 
+async function deleteEmployee(){
+  let employeeTitles = []
+  let chosenEmployee
+  const allEmployees = await Employee.findAll({
+    raw : true
+  })
 
+  for(let i = 0; i < allEmployees.length; i++){
+    employeeTitles.push(allEmployees[i].first_name)
+  }
+    inquirer.prompt([
+      {
+        type: "list",
+        name: "emplyeeName",
+        message: "what employee do you want to delete?",
+        choices: employeeTitles,
+      }
+    ]).then(async (answers)  => {
+      for(let i = 0; i < allEmployees.length; i++){
+        if(answers.emplyeeName === allEmployees[i].first_name){
+          chosenEmployee = allEmployees[i].id;
+        }
+      }
+        const deleteEmployee = await Employee.destroy({
+          where: {
+            id: chosenEmployee,
+          },
+      });
+      console.log(`${answers.emplyeeName} has now been removed as an employee.\n`)
+      promtQuestion();
+    })
+    
+  } 
 
 
 async function startApp(){
@@ -64,6 +96,7 @@ function promtQuestion(){
       "Create a Department",
       "Create a Role",
       "Create a Employee",
+      "Delete Employees",
       "Exit",
     ]
   }).then((choice) => {    
@@ -79,6 +112,8 @@ function promtQuestion(){
     viewDepartments()
   }else if(choice.newAddition === "View Employees"){
     viewEmployees()
+  }else if(choice.newAddition === "Delete Employees"){
+    deleteEmployee()
   } else {
     console.log("Thanks for adding! Good bye")
     return;
