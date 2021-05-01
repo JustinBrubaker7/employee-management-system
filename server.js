@@ -18,20 +18,37 @@ app.use(routes);
 
 
 
-async function consoleTable(){
+async function viewRoles(){
 
   const allRoles = await Role.findAll({
     raw : true
   })
-  //console.log(allRoles)
   console.table(allRoles)
+  promtQuestion();
+}
+
+async function viewDepartments(){
+
+  const allDepartments = await Department.findAll({
+    raw : true
+  })
+  console.table(allDepartments)
+  promtQuestion();
+}
+
+async function viewEmployees(){
+
+  const allEmployees = await Employee.findAll({
+    raw : true
+  })
+  console.table(allEmployees)
+  promtQuestion();
 }
 
 
 
 
 async function startApp(){
-  await consoleTable()
   await promtQuestion();
 }
 
@@ -39,20 +56,29 @@ function promtQuestion(){
   inquirer.prompt({
     type: "list",
     name: "newAddition",
-    message: "Do you want to add a department, role, or an employee?",
+    message: "What would you like to do?",
     choices: [
-      "Department",
-      "Role",
-      "Employee",
+      "View Roles",
+      "View Departments",
+      "View Employees",
+      "Create a Department",
+      "Create a Role",
+      "Create a Employee",
       "Exit",
     ]
   }).then((choice) => {    
-  if(choice.newAddition === "Department"){
+  if(choice.newAddition === "Create a Department"){
     createNewDepartment();
-  } else if(choice.newAddition === "Role"){
+  } else if(choice.newAddition === "Create a Role"){
     createNewRole();
-  } else if(choice.newAddition === "Employee"){
+  } else if(choice.newAddition === "Create a Employee"){
     createNewEmployee()
+  } else if(choice.newAddition === "View Roles"){
+    viewRoles()
+  }else if(choice.newAddition === "View Departments"){
+    viewDepartments()
+  }else if(choice.newAddition === "View Employees"){
+    viewEmployees()
   } else {
     console.log("Thanks for adding! Good bye")
     return;
